@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import {Route, BrowserRouter as Router, Switch} from "react-router-dom";
+import Sidebar from "./components/sidebar";
+import {AiOutlineHistory} from "react-icons/ai";
 
 window.nbrColumns = 20;
 window.nbrRows = 20;
@@ -92,42 +95,99 @@ class Game extends React.Component {
         });
     }
 
-    render() {
-        const history = this.state.history;
-        const current = history[this.state.stepNumber];
-        const winner = calculateWinner(current.squares, window.nbrColumns, current.lastPos);
+    createHistory(history) {
+        return (
+            history.map((step, move) => {
+                const desc = move ?
+                    'Go to move #' + move :
+                    'Go to game start';
+                return (
+                    <li key={move}>
+                        <button onClick={() => this.jumpTo(move)}>{desc}</button>
+                    </li>
+                );
+            })
+        );
+    }
 
-        const moves = history.map((step, move) => {
-            const desc = move ?
-                'Go to move #' + move :
-                'Go to game start';
-            return (
-                <li key={move}>
-                    <button onClick={() => this.jumpTo(move)}>{desc}</button>
-                </li>
-            );
-        });
-
-        let status;
-        if (winner) {
-            status = 'Winner: ' + winner;
-        } else {
-            status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O')
+    createHistoryData(history, stepNumber) {
+        let historyData = [];
+        if (history.length > 1) {
+            historyData.push(
+                {
+                    title: 'Undo',
+                    path: '/undo',
+                    icon: <AiOutlineHistory />,
+                    cName: 'nav-text'
+                }
+            )
         }
+        if (history.length > 1 && stepNumber < history.length -1) {
+            historyData.push(
+                {
+                    title: 'Redo',
+                    path: '/redo',
+                    icon: <AiOutlineHistory />,
+                    cName: 'nav-text'
+                }
+            )
+        }
+        return historyData;
+    }
 
+    createStatusText(squares, lastPos) {
+        const winner = calculateWinner(squares, window.nbrColumns, lastPos);
+        if (winner) {
+            return 'Winner: ' + winner;
+        } else {
+            return 'Next player: ' + (this.state.xIsNext ? 'X' : 'O')
+        }
+    }
+
+    createBoard(squares, moves) {
         return (
             <div className="game">
                 <div className="game-board">
                     <Board
-                        squares={current.squares}
+                        squares={squares}
                         onClick={(i) => this.handleClick(i) }
                     />
                 </div>
                 <div className="game-info">
-                    <div>{status}</div>
                     <ol>{moves}</ol>
                 </div>
             </div>
+        );
+    }
+
+    render() {
+        const history = this.state.history;
+        const current = history[this.state.stepNumber];
+        const moves = this.createHistory(history);
+        let status = this.createStatusText(current.squares, current.lastPos);
+        let board =this.createBoard(current.squares, moves)
+        let historyData = this.createHistoryData(history, this.state.stepNumber);
+
+        return (
+            <>
+                <Router>
+                    <Sidebar nextPlayer={status} historyData={historyData} />
+                     <Switch>
+                         <Route path="/">
+                             {board}
+                         </Route>
+                         <Route path="/new-game">
+                            {board}
+                        </Route>
+                        <Route path="/redo">
+                            {board}
+                        </Route>
+                        <Route path="/undo">
+                            {board}
+                        </Route>
+                    </Switch>
+                </Router>
+            </>
         );
     }
 }
