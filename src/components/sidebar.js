@@ -27,10 +27,10 @@ function SidebarCloseButton(props) {
     );
 }
 
-function SidebarNewGame() {
+function SidebarNewGame(props) {
     return (
         <li key='0' className='nav-text'>
-            <Link to='/new-game'>
+            <Link to='/new-game' onClick={props.showSidebar}>
                 <RiRestartLine />
                 <span>New game</span>
             </Link>
@@ -49,7 +49,7 @@ function Sidebar(props) {
                 <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
                     <ul className='nav-menu-items' >
                         <SidebarCloseButton showSidebar={showSidebar} />
-                        <SidebarNewGame />
+                        <SidebarNewGame showSidebar={showSidebar} />
                         {props.historyData.map((item, index) => {
                             return (
                                 <li key={index} className={item.cName}>

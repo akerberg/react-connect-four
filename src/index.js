@@ -3,59 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import {Route, BrowserRouter as Router, Switch} from "react-router-dom";
 import Sidebar from "./components/sidebar";
+import Board from "./components/board";
 import {AiOutlineHistory} from "react-icons/ai";
 
 window.nbrColumns = 20;
 window.nbrRows = 20;
-
-function Square(props) {
-    return (
-        <button className="square" onClick={props.onClick}>
-            {props.value}
-        </button>
-    );
-}
-
-class Board extends React.Component {
-    renderSquare(i) {
-        return (<Square
-            key={i}
-            value={this.props.squares.get(i)}
-            onClick={() => this.props.onClick(i)}
-        />);
-    }
-
-    renderRow(nbrColumns, startId) {
-        let columns = [];
-        for (let i = startId; i < startId + nbrColumns; i++) {
-            columns.push(this.renderSquare(i));
-        }
-        let key = "startId" + startId;
-        return (
-            <div
-                className="board-row"
-                key={key}>
-                {columns}
-            </div>
-        );
-    }
-
-    renderBoard(nbrColumns, nbrRows) {
-        let rows = [];
-        for (let i = 0; i < nbrRows; i++) {
-            rows.push(this.renderRow(nbrColumns, i*nbrColumns));
-        }
-        return (
-            <div>
-                {rows}
-            </div>
-        );
-    }
-
-    render() {
-        return this.renderBoard(window.nbrColumns,window.nbrRows);
-    }
-}
 
 class Game extends React.Component {
     constructor(props) {
@@ -146,17 +98,13 @@ class Game extends React.Component {
 
     createBoard(squares, moves) {
         return (
-            <div className="game">
-                <div className="game-board">
+            <>
                     <Board
                         squares={squares}
                         onClick={(i) => this.handleClick(i) }
                     />
-                </div>
-                <div className="game-info">
-                    <ol>{moves}</ol>
-                </div>
-            </div>
+                    {moves}
+            </>
         );
     }
 
