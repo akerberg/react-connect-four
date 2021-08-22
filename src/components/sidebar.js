@@ -5,11 +5,12 @@ import { AiOutlineClose } from 'react-icons/ai';
 import './sidebar.css';
 import { IconContext } from "react-icons";
 import {RiRestartLine} from "react-icons/ri";
+import {jumpState} from "../index";
 
 function TopBar(props) {
     return (
         <div className="top-bar">
-            <Link to="#" className='menu-button' onClick={props.showSidebar}>
+            <Link to="/" className='menu-button' onClick={props.showSidebar}>
                 <FaBars/>
             </Link>
             {props.nextPlayer}
@@ -30,9 +31,24 @@ function SidebarCloseButton(props) {
 function SidebarNewGame(props) {
     return (
         <li key='0' className='nav-text'>
-            <Link to='/new-game' onClick={props.showSidebar}>
+            <Link to='/' onClick={() => {
+                props.showSidebar();
+                props.jumpToState(jumpState.START);
+                }
+            }>
                 <RiRestartLine />
                 <span>New game</span>
+            </Link>
+        </li>
+    )
+}
+
+function About(props) {
+    return (
+        <li key='3' className='nav-text'>
+            <Link to='/about' onClick={props.showSidebar}>
+                <RiRestartLine />
+                <span>About</span>
             </Link>
         </li>
     )
@@ -49,17 +65,20 @@ function Sidebar(props) {
                 <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
                     <ul className='nav-menu-items' >
                         <SidebarCloseButton showSidebar={showSidebar} />
-                        <SidebarNewGame showSidebar={showSidebar} />
+                        <SidebarNewGame showSidebar={showSidebar}
+                                        jumpToState={props.jumpToState}/>
                         {props.historyData.map((item, index) => {
                             return (
                                 <li key={index} className={item.cName}>
-                                    <Link to={item.path}>
+                                    <Link to={item.path} onClick={() => props.jumpToState(item.state) }>
                                         {item.icon}
                                         <span>{item.title}</span>
                                     </Link>
                                 </li>
                             )
                         })}
+                        <About showSidebar={showSidebar} />
+
                     </ul>
                 </nav>
             </IconContext.Provider>

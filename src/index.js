@@ -9,7 +9,13 @@ import {AiOutlineHistory} from "react-icons/ai";
 window.nbrColumns = 20;
 window.nbrRows = 20;
 
-class Game extends React.Component {
+export const jumpState = {
+    BACK: "back",
+    FORWARD: "forward",
+    START: "start",
+}
+
+export default class Game extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -20,6 +26,7 @@ class Game extends React.Component {
             stepNumber: 0,
             xIsNext: true,
         };
+        this.jumpToState = this.jumpToState.bind(this);
     }
 
     handleClick(i) {
@@ -47,28 +54,26 @@ class Game extends React.Component {
         });
     }
 
-    createHistory(history) {
-        return (
-            history.map((step, move) => {
-                const desc = move ?
-                    'Go to move #' + move :
-                    'Go to game start';
-                return (
-                    <li key={move}>
-                        <button onClick={() => this.jumpTo(move)}>{desc}</button>
-                    </li>
-                );
-            })
-        );
+    jumpToState(state) {
+        if (state === jumpState.BACK) {
+            this.jumpTo(this.state.stepNumber-1);
+        }
+        else if (state === jumpState.FORWARD) {
+            this.jumpTo(this.state.stepNumber+1);
+        }
+        else {
+            this.jumpTo(0);
+        }
     }
 
     createHistoryData(history, stepNumber) {
         let historyData = [];
-        if (history.length > 1) {
+        if (history.length > 1 && stepNumber > 0) {
             historyData.push(
                 {
                     title: 'Undo',
-                    path: '/undo',
+                    path: '/',
+                    state: jumpState.BACK,
                     icon: <AiOutlineHistory />,
                     cName: 'nav-text'
                 }
@@ -78,7 +83,8 @@ class Game extends React.Component {
             historyData.push(
                 {
                     title: 'Redo',
-                    path: '/redo',
+                    path: '/',
+                    state: jumpState.FORWARD,
                     icon: <AiOutlineHistory />,
                     cName: 'nav-text'
                 }
@@ -96,42 +102,26 @@ class Game extends React.Component {
         }
     }
 
-    createBoard(squares, moves) {
-        return (
-            <>
-                    <Board
-                        squares={squares}
-                        onClick={(i) => this.handleClick(i) }
-                    />
-                    {moves}
-            </>
-        );
-    }
-
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
-        const moves = this.createHistory(history);
         let status = this.createStatusText(current.squares, current.lastPos);
-        let board =this.createBoard(current.squares, moves)
         let historyData = this.createHistoryData(history, this.state.stepNumber);
+        let squares = current.squares;
 
         return (
             <>
                 <Router>
-                    <Sidebar nextPlayer={status} historyData={historyData} />
+                    <Sidebar nextPlayer={status} historyData={historyData} jumpToState={this.jumpToState}/>
                      <Switch>
-                         <Route path="/">
-                             {board}
+                         <Route exact path="/">
+                             <Board squares={squares} onClick={(i) => this.handleClick(i) }/>
                          </Route>
-                         <Route path="/new-game">
-                            {board}
-                        </Route>
-                        <Route path="/redo">
-                            {board}
-                        </Route>
-                        <Route path="/undo">
-                            {board}
+                         <Route exact path="/about">
+                             Simple connect 4 game created in react. Build upon react tutorial:
+                             <a href='https://reactjs.org/tutorial/tutorial.html'>
+                                 https://reactjs.org/tutorial/tutorial.html
+                             </a>
                         </Route>
                     </Switch>
                 </Router>
