@@ -7,6 +7,11 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    padding-left: 0px;
+}
+
+.top-bar.active {
+    padding-left: 250px;
 }
 
 .menu-button {

@@ -10,10 +10,13 @@ import {jumpState} from "../index";
 
 function TopBar(props) {
     return (
-        <div className="top-bar">
-            <Link to="/" className='menu-button' onClick={props.showSidebar}>
-                <FaBars/>
-            </Link>
+        <div className={props.isSidebarShown ? 'top-bar active' : 'top-bar'}>
+            {!props.isSidebarShown ?
+                <Link to="/" className='menu-button' onClick={props.showSidebar}>
+                    <FaBars/>
+                </Link>
+                : ''
+            }
             {props.nextPlayer}
         </div>
     );
@@ -62,7 +65,7 @@ function Sidebar(props) {
     return (
         <>
             <IconContext.Provider value={{className:'icons'}}>
-                <TopBar nextPlayer={props.nextPlayer} showSidebar={showSidebar} />
+                <TopBar isSidebarShown={sidebar} nextPlayer={props.nextPlayer} showSidebar={showSidebar} />
                 <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
                     <ul className='nav-menu-items' >
                         <SidebarCloseButton showSidebar={showSidebar} />
