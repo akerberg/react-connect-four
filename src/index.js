@@ -98,8 +98,19 @@ export default class Game extends React.Component {
         if (winner) {
             return 'Winner: ' + winner;
         } else {
-            return 'Next player: ' + (this.state.xIsNext ? 'X' : 'O')
+            return 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
+    }
+
+    createAboutText() {
+        return (
+            <div className="about">
+                Simple connect 4 game created using react. Built on react tutorial:&nbsp;
+                <a href='https://reactjs.org/tutorial/tutorial.html'>
+                https://reactjs.org/tutorial/tutorial.html
+                </a>
+            </div>
+        );
     }
 
     render() {
@@ -118,10 +129,7 @@ export default class Game extends React.Component {
                              <Board squares={squares} onClick={(i) => this.handleClick(i) }/>
                          </Route>
                          <Route exact path="/about">
-                             Simple connect 4 game created in react. Build upon react tutorial:
-                             <a href='https://reactjs.org/tutorial/tutorial.html'>
-                                 https://reactjs.org/tutorial/tutorial.html
-                             </a>
+                             {this.createAboutText()}
                         </Route>
                     </Switch>
                 </Router>
