@@ -6,8 +6,8 @@ import Sidebar from "./components/sidebar";
 import Board from "./components/board";
 import {AiOutlineHistory} from "react-icons/ai";
 
-window.nbrColumns = 20;
-window.nbrRows = 20;
+window.nbrColumns = 100;
+window.nbrRows = 100;
 
 export const jumpState = {
     BACK: "back",

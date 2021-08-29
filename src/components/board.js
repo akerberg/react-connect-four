@@ -3,9 +3,11 @@ import './board.css';
 
 function Square(props) {
     return (
-        <button className="square" onClick={props.onClick}>
-            {props.value}
-        </button>
+        <td className="board-column">
+            <button className="square" onClick={props.onClick}>
+                {props.value}
+            </button>
+        </td>
     );
 }
 
@@ -25,11 +27,11 @@ class Board extends React.Component {
         }
         let key = "startId" + startId;
         return (
-            <div
+            <tr
                 className="board-row"
                 key={key}>
                 {columns}
-            </div>
+            </tr>
         );
     }
 
@@ -39,8 +41,10 @@ class Board extends React.Component {
             rows.push(this.renderRow(nbrColumns, i*nbrColumns));
         }
         return (
-            <div>
-                {rows}
+            <div className="wrapper">
+                <table className="board">
+                    {rows}
+                </table>
             </div>
         );
     }
