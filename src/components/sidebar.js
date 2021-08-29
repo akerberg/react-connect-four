@@ -4,7 +4,8 @@ import { FaBars } from 'react-icons/fa';
 import { AiOutlineClose } from 'react-icons/ai';
 import './sidebar.css';
 import { IconContext } from "react-icons";
-import {RiRestartLine} from "react-icons/ri";
+import {AiOutlinePlus} from "react-icons/ai";
+import {AiOutlineQuestionCircle} from "react-icons/ai";
 import {jumpState} from "../index";
 
 function TopBar(props) {
@@ -36,7 +37,7 @@ function SidebarNewGame(props) {
                 props.jumpToState(jumpState.START);
                 }
             }>
-                <RiRestartLine />
+                <AiOutlinePlus />
                 <span>New game</span>
             </Link>
         </li>
@@ -47,7 +48,7 @@ function About(props) {
     return (
         <li key='3' className='nav-text'>
             <Link to='/about' onClick={props.showSidebar}>
-                <RiRestartLine />
+                <AiOutlineQuestionCircle />
                 <span>About</span>
             </Link>
         </li>
@@ -60,7 +61,7 @@ function Sidebar(props) {
 
     return (
         <>
-            <IconContext.Provider value={{ color: 'fff'}}>
+            <IconContext.Provider value={{className:'icons'}}>
                 <TopBar nextPlayer={props.nextPlayer} showSidebar={showSidebar} />
                 <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
                     <ul className='nav-menu-items' >

@@ -4,7 +4,8 @@ import './index.css';
 import {Route, BrowserRouter as Router, Switch} from "react-router-dom";
 import Sidebar from "./components/sidebar";
 import Board from "./components/board";
-import {AiOutlineHistory} from "react-icons/ai";
+import {AiOutlineRedo} from "react-icons/ai";
+import {AiOutlineUndo} from "react-icons/ai";
 
 window.nbrColumns = 100;
 window.nbrRows = 100;
@@ -74,7 +75,7 @@ export default class Game extends React.Component {
                     title: 'Undo',
                     path: '/',
                     state: jumpState.BACK,
-                    icon: <AiOutlineHistory />,
+                    icon: <AiOutlineUndo />,
                     cName: 'nav-text'
                 }
             )
@@ -85,7 +86,7 @@ export default class Game extends React.Component {
                     title: 'Redo',
                     path: '/',
                     state: jumpState.FORWARD,
-                    icon: <AiOutlineHistory />,
+                    icon: <AiOutlineRedo />,
                     cName: 'nav-text'
                 }
             )
