@@ -43,7 +43,9 @@ class Board extends React.Component {
         return (
             <div className="wrapper">
                 <table className="board">
-                    {rows}
+                    <tbody>
+                        {rows}
+                    </tbody>
                 </table>
             </div>
         );

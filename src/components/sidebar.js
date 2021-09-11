@@ -6,7 +6,7 @@ import './sidebar.css';
 import { IconContext } from "react-icons";
 import {AiOutlinePlus} from "react-icons/ai";
 import {AiOutlineQuestionCircle} from "react-icons/ai";
-import {jumpState} from "../index";
+import {jumpState} from "./game";
 
 function TopBar(props) {
     return (
